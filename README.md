@@ -9,6 +9,7 @@
 * 词典配置方式调整为统一类加载，详见AnsjSegImpl.class
 * 封装统一接口AnsjSeg.class,避免使用不同分词方法，重复加载模型
 * 接口AnsjSeg.class配置通信锁，避免不同服务同时调用接口
+* 增加使用jvm启动代码，供python调用
 #### 词典
 * 词典统一路径为../resources/，同时解耦亚洲和外国人名识别方法（详见ToAnalysis.class）
 * 新增机构名词典company.dic
@@ -23,6 +24,19 @@
 ````
 
 ## 接口说明
+
+0、快速调用方法：
+````
+    public static void main(String[] args) throws IOException {
+            String text = "做超跌反弹更适合短线操作，好股如好酒，越守越醇。";
+            AnsjSeg ansjSeg = AnsjSegPython.init();
+            String userDicPath = "D:\\java_project\\java-ansj-seg-master\\src\\main\\java\\com\\zy\\alg\\jarExecution\\userDic.txt";
+            Forest userDic = AnsjSegPython.insertUserDic(userDicPath);
+    //        List<List<String>> terms = AnsjSegPython.textTokenizer(ansjSeg, text, "1");
+            List<List<String>> terms = AnsjSegPython.textTokenizerUser(ansjSeg, text, "1", userDic);
+            System.out.println(terms);
+        }
+````
 
 1、默认分词方法：
 ````
